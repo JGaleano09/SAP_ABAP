@@ -1,0 +1,29 @@
+
+
+  DATA lo_alv TYPE REF TO cl_salv_table.
+
+  DATA:
+    lr_columns TYPE REF TO cl_salv_columns_table,
+    lr_column  TYPE REF TO cl_salv_column_table,
+    lr_funct   TYPE REF TO cl_salv_functions.
+
+  CHECK ti_log_matact IS NOT INITIAL.
+
+  TRY.
+      CALL METHOD cl_salv_table=>factory
+        IMPORTING
+          r_salv_table = lo_alv
+        CHANGING
+          t_table      = ti_log_matact.
+
+      lr_funct = lo_alv->get_functions( ).
+      lr_funct->set_all( abap_true ).
+
+      lr_columns = lo_alv->get_columns( ).
+      lr_columns->set_optimize( ).
+
+      lo_alv->display( ).
+
+    CATCH cx_salv_msg .
+
+  ENDTRY.
